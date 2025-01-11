@@ -1,12 +1,12 @@
-    // Data Constants and Theme Configuration remain the same
-    
+ // Data Constants and Theme Configuration remain the same
+
     // Chart Creation Functions
     function createFinancialCharts() {
         const colors = getThemeColors(document.body.classList.contains('dark-theme'));
         
         // 1. Revenue & ARR Growth - Line Chart (keep existing)
         createRevenueChart();
-    
+
         // 2. Unit Economics - Area Chart
         new Chart(document.getElementById('unitEconomicsChart').getContext('2d'), {
             type: 'line',
@@ -38,7 +38,7 @@
                 }
             }
         });
-    
+
         // 3. Efficiency Metrics - Donut Chart
         new Chart(document.getElementById('efficiencyChart').getContext('2d'), {
             type: 'doughnut',
@@ -61,7 +61,7 @@
             }
         });
     }
-    
+
     function createOperationalCharts() {
         const colors = getThemeColors(document.body.classList.contains('dark-theme'));
     
@@ -84,7 +84,7 @@
                 }
             }
         });
-    
+
         // 2. Market Coverage - Pie Chart with Exploded Segments
         new Chart(document.getElementById('marketCoverageChart').getContext('2d'), {
             type: 'pie',
@@ -107,7 +107,7 @@
                 }
             }
         });
-    
+
         // 3. ROI Impact - Flow Chart (Simulated Sankey)
         new Chart(document.getElementById('roiChart').getContext('2d'), {
             type: 'bar',
@@ -160,21 +160,21 @@
             indicators[index].classList.add('active');
             currentIndex = index;
         }
-    
+
         prevBtn?.addEventListener('click', () => {
             const newIndex = (currentIndex - 1 + slides.length) % slides.length;
             showSlide(newIndex);
         });
-    
+
         nextBtn?.addEventListener('click', () => {
             const newIndex = (currentIndex + 1) % slides.length;
             showSlide(newIndex);
         });
-    
+
         indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', () => showSlide(index));
         });
-    
+
         // Auto-advance slides
         setInterval(() => {
             if (document.getElementById('dashboard').classList.contains('active')) {
