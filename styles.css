@@ -39,147 +39,290 @@ body {
     --card-bg: #1e293b;
 }
 
-/* Dashboard Layout */
-#investor-dashboard {
-    min-height: 600px;
-    width: 100%;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-    animation: fadeIn 0.5s ease-in;
-}
+          /* Dashboard Base */
+                #investor-dashboard {
+                min-height: 600px;
+                width: 100%;
+                max-width: 1440px; /* Added */
+                margin: 0 auto; /* Added */
+                padding: 0.5rem;
+                border-radius: 0.5rem;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                transition: all 0.3s ease;
+            }
+            
+            .dashboard-container {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 2rem; /* Modified */
+                max-width: 100%; /* Added */
+                margin: 0 auto; /* Added */
+            }
+                
+                /* Metrics Grid Layout */
+                .metrics-section {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1rem;
+                }
+                
+                .section {
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    transition: background 0.3s ease;
+                    position: relative;
+                }
+                
+                .section.financial {
+                    background: var(--financial-gradient);
+                }
+                
+                .section.operational {
+                    background: var(--operational-gradient);
+                }
+                
+                /* KPI Cards Grid */
+                .kpi-grid,
+                .metrics-container {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-rows: repeat(3, minmax(65px, auto));
+                    gap: 0.75rem;
+                    align-items: stretch;
+                }
+                
+               /* Update metric card layout */
+                    .metric-card {
+                        background: var(--card-bg);
+                        padding: 0.75rem 1rem;
+                        border-radius: 0.5rem;
+                        border: 1px solid var(--border-color);
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                        animation: fadeIn 0.3s ease-in-out;
+                        display: grid;
+                        grid-template-columns: 65% 35%;
+                        grid-template-areas: 
+                            "title trend"
+                            "value trend";
+                        align-items: center;
+                        gap: 0.25rem 0.75rem;
+                        min-height: 65px;
+                        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                                    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
+                /* Enhanced Animations for Metric Cards */
+                .metric-card {
+                    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                }
 
-.dashboard-container {
-    display: grid;
-    gap: 2rem;
-    padding: 2rem;
-    transition: all 0.3s ease;
-}
+               .metric-card:hover {
+                    transform: translateY(-2px) scale(1.02);
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+                }
+                
+                .metric-card h3 {
+                    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+                    margin: 0;
+                    color: var(--text-secondary);
+                    font-weight: 500;
+                    grid-area: title;
+                    line-height: 1.2;
+                }
+            
+            .metric-card .value {
+                font-size: clamp(1rem, 2vw, 1.2rem);
+                font-weight: bold;
+                margin: 0;
+                color: var(--text-primary);
+                grid-area: value;
+                line-height: 1.2;
+            }
+            
+            .metric-card .trend {
+                font-size: clamp(0.7rem, 1.3vw, 0.8rem);
+                color: var(--text-tertiary);
+                grid-area: trend;
+                text-align: right;
+                align-self: center;
+                line-height: 1.1;
+            }
+                
+                /* Charts Section */
+                .charts-section {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                    margin: 1.5rem 0;
+                    height: 400px;
+                }
+                
+                .chart-slider {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                }
+                
+                .chart-container {
+                    background: var(--card-bg);
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    height: 300px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                    position: relative;
+                }
+                
+                .chart-container canvas {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                    display: none;
+                }
+                
+                .chart-container canvas.active {
+                    opacity: 1;
+                    display: block;
+                }
 
-/* Grid Layouts */
-.metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
+                /* Chart Container Animations */
+                .chart-container {
+                    transition: all 0.3s ease;
+                }
+                
+                .chart-container:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+                }
+                
 
-.charts-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin: 1.5rem 0;
-}
 
-.metrics-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-}
+                /* Navigation Controls */
+                .nav-arrow {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    z-index: 10;
+                    background: var(--bg-primary);
+                    border: none;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    cursor: pointer;
+                    opacity: 0.8;
+                    transition: opacity 0.3s ease;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    color: var(--text-primary);
+                }
+                
+                .nav-arrow:hover {
+                    opacity: 1;
+                    background: var(--card-bg);
+                }
+                
+                .nav-arrow.left {
+                    left: 10px;
+                }
+                
+                .nav-arrow.right {
+                    right: 10px;
+                }
+                
+                .slide-dots {
+                    position: absolute;
+                    bottom: 10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    gap: 8px;
+                    z-index: 10;
+                }
+                
+                .dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: var(--text-secondary);
+                    opacity: 0.5;
+                    cursor: pointer;
+                    transition: opacity 0.3s ease;
+                }
+                
+                .dot.active {
+                    opacity: 1;
+                    background: var(--text-primary);
+                }
+                
+                /* Theme Variables */
+                :root {
+                    --bg-primary: #ffffff;
+                    --card-bg: #ffffff;
+                    --financial-gradient: linear-gradient(145deg, #1e40af22, #60a5fa22);
+                    --operational-gradient: linear-gradient(145deg, #0f172a22, #47556922);
+                    --border-color: #e2e8f0;
+                    --text-primary: #1a202c;
+                    --text-secondary: #4a5568;
+                    --text-tertiary: #718096;
+                }
+                
+                [data-theme="dark"] {
+                    --bg-primary: #1a202c;
+                    --card-bg: #2d3748;
+                    --financial-gradient: linear-gradient(145deg, #1e40af44, #60a5fa44);
+                    --operational-gradient: linear-gradient(145deg, #0f172a44, #47556944);
+                    --border-color: #2d3748;
+                    --text-primary: #f7fafc;
+                    --text-secondary: #e2e8f0;
+                    --text-tertiary: #cbd5e0;
+                }
+                
+                /* Responsive Design */
+                @media (max-width: 768px) {
+                    .metrics-section,
+                    .charts-section {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .kpi-grid,
+                    .metrics-container {
+                        grid-template-columns: 1fr;
+                        grid-template-rows: auto;
+                    }
+                    
+                    .chart-container {
+                        height: 250px;
+                    }
+                }
+                
+                /* Animations */
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @keyframes slideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateX(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
 
-/* Section Styles */
-.section {
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-}
 
-.section.financial {
-    background: var(--financial-gradient);
-}
-
-.section.operational {
-    background: var(--operational-gradient);
-}
-
-/* Card Styles */
-.metric-card {
-    background: var(--card-bg);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--financial-primary);
-    transition: transform 0.3s ease;
-    animation: slideIn 0.4s ease-out;
-}
-
-.metric-title {
-    font-size: 12px;
-    color: #93c5fd;
-    margin: 0;
-}
-
-.metric-value {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--text-primary);
-    margin: 4px 0;
-}
-
-.metric-change {
-    font-size: 12px;
-    color: #60a5fa;
-    margin: 0;
-}
-
-/* Chart Container */
-.chart-container {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-/* Canvas Styles */
-canvas {
-    margin: 16px 0;
-    height: 300px !important;
-    transition: background-color 0.3s ease;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Animation Delays */
-.metrics-grid > div:nth-child(1) { animation-delay: 0.1s; }
-.metrics-grid > div:nth-child(2) { animation-delay: 0.2s; }
-.metrics-grid > div:nth-child(3) { animation-delay: 0.3s; }
-.metrics-grid > div:nth-child(4) { animation-delay: 0.4s; }
-
-/* Hover Effects */
-.metric-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.chart-container:hover {
-    transform: scale(1.02);
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .metrics-grid,
-    .charts-grid,
-    .metrics-container {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* Main container and shared styles */
 .container,
@@ -845,3 +988,11 @@ body.dark-theme .stat-number {
 .tab-button {
     transform: translateZ(0);
     backface-visibility: hidden;
+
+/* Hardware Acceleration for Smooth Animations */
+.metric-card,
+.chart-container {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
+}
