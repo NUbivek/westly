@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="vanilla-dashboard.js"></script>
+
+</head>
+<body>
+    <div class="title-slide">
+        <h1>Bivek Adhikari</h1>
+        <div class="subtitle">Investment Professional</div>
+        <div style="font-size: 1.1em; margin-top: 40px;">
+            Technical Founder • AI/ML Expert • Tech Investor<br>
+            Berkeley Haas MBA • MS in Machine Learning, Northwestern University • BS Finance & CS
+        </div>
+         <div class="theme-toggle">
+            <button class="toggle-button" id="themeToggle" aria-label="Toggle dark mode"></button>
+        </div>
+        </div>
+
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab('background')">Background</button>
+            <button class="tab-button" onclick="openTab('deal-flow')">Deal Flow</button>
+            <button class="tab-button" onclick="openTab('focus')">Focus</button>
+            <button class="tab-button" onclick="openTab('thesis-deep-dive')">Thesis Deep-Dive</button>
+            <button class="tab-button" onclick="openTab('investment-memo')">Investment Memo</button>
+            <button class="tab-button" onclick="openTab('sample-deals')">Sample Deals</button>
+            <button class="tab-button" onclick="openTab('my-story')">My Story</button>
+        </div>
+
+        <div id="background" class="tab-content active">
+            <h2>Track Record & Experience</h2>
+            <div class="experience-container">
+                <div class="experience-category">
+                    <h3 style="color: #4a5568; font-size: 1.4em;">Investment Experience</h3>
+                    <div class="experience-box">
+                        <span class="experience-date">2024-Present</span>
+                        <h3>GroundForce Capital</h3>
+                        <div class="strategic-note">Growth Investments, Series B+</div>
+                        <ul>
+                            <li>Developed & executed Supply Chain thesis</li>
+                            <li>Screened 200+ companies</li>
+                            <li>Modeled returns for $10-40M checks (2.5-4x MOIC, 25%+ IRR)</li>
+                            <li>Triangulated DCF, comps, and precedents for valuation</li>
+                        </ul>
+                    </div>
+                    <div class="experience-box">
+                        <span class="experience-date">2023-2024</span>
+                        <h3>Autotech Ventures</h3>
+                        <div class="strategic-note">Early-stage Investments</div>
+                        <ul>
+                            <li>Incubated a startup-studio and built a home-grown startup</li>
+                            <li>Sourced 35+ leads, leveraging AI & robotics expertise/network</li>
+                            <li>Evaluated technical moats, market size, scalability, and valuation</li>
+                        </ul>
+                    </div>
+                    <div class="experience-box">
+                        <span class="experience-date">2023-2024</span>
+                        <h3>Berkeley Haas SIF</h3>
+                        <div class="strategic-note">Socially Responsible Investment (SRI) & ESG fund</div>
+                        <ul>
+                            <li>Led $4.3M ESG portfolio (13.87% return)</li>
+                            <li>Implemented technical scalability metrics & impact framework</li>
+                            <li>Revised IPS to include regional concentration risks</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="experience-category">
+                    <h3 style="color: #4a5568; font-size: 1.4em;">Technical Expertise</h3>
+                    <div class="experience-box technical-experience">
+                        <span class="experience-date">2020-2023</span>
+                        <h3>ServicePower</h3>
+                        <div class="strategic-note">Strategically chosen for a parallel & relevant startup quest</div>
+                        <ul>
+                            <li>Delivered AI/ML solutions for Fortune 100 clients, $13M+ ARR</li>
+                            <li>Built 2 and deployed 5 SaaS products</li>
+                            <li>Led 37+ member team across 14 firms</li>
+                        </ul>
+                    </div>
+                    <div class="experience-box technical-experience">
+                        <span class="experience-date">2020-2022</span>
+                        <h3>Monk Robotics</h3>
+                        <div class="strategic-note">Startup</div>
+                        <ul>
+                            <li>Launched 3 MVPs: autonomous mower, sanitizing robots & IoT tech</li>
+                            <li>Rapidly adapted GTM & PMF amid COVID challenges</li>
+                            <li>Achieved $12K in pilot ARR in manufacturing tech</li>
+                        </ul>
+                    </div>
+                    <div class="experience-box technical-experience">
+                        <span class="experience-date">2017-2020</span>
+                        <h3>Amida</h3>
+                        <div class="strategic-note">Startup</div>
+                        <ul>
+                            <li>Closed $100M+ in TCV</li>
+                            <li>Owned 2 product lines, led 13+ federal proposals</li>
+                            <li>Supported 23+ commercial deals, driving 100%+ YOY growth</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="deal-flow" class="tab-content">
+            <h2>Deal Flow & Network</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Bay Area Ecosystem</h3>
+                    <ul>
+                        <li>VC Club, President at Haas</li>
+                        <li>UC LAUNCH accelerator, SVP</li>
+                        <li>Skydeck, AI Entrepreneurs of Berkeley, Blockchain Club</li>
+                        <li>Stanford & Berkeley Clubs Network</li>
+                        <li>Immigrant Community: Australian & Asian Networks</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Multi-Hub Network</h3>
+                    <ul>
+                        <li>Northwestern: AI/ML research network</li>
+                        <li>DC, MD, and VA: Tech startup community</li>
+                        <li>Florida: UF/UCF entrepreneurship hubs</li>
+                        <li>Other industry network: 800+ in Supply Chain, 300+ in Health Data, and 1,000+ in AI/Data Science</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="focus" class="tab-content">
+            <h2>Investment Focus & Market Opportunities</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>AI-First SaaS Opportunities</h3>
+                    <div class="market-stat">
+                        <div class="stat-number">$4.50B</div>
+                        <div>Construction Management | 2026</div>
+                    </div>
+                    <div class="market-stat">
+                        <div class="stat-number">$4.80B</div>
+                        <div>Auditing & Accounting | 2024</div>
+                    </div>
+                    <div class="market-stat">
+                        <div>Key attributes: poor interoperability, integration nightmares, disparate data sources, unstructured datasets, excessive reliance on paper-based systems, overuse of on-premises databases, and a maze of clicks and endless finagling.</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Supply Chain Intelligence</h3>
+                    <div class="market-stat">
+                        <div class="stat-number">$21.93B</div>
+                        <div>Market Size | 15.4% CAGR</div>
+                    </div>
+                    <ul>
+                        <li>Inventory optimization</li>
+                        <li>Supply & Demand planning</li>
+                        <li>Procurement & sourcing</li>
+                        <li>Finance and payment</li>
+                        <li>Traceability & compliance</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid-2" style="margin-top: 20px;">
+                <div class="card">
+                    <h3>Mixed TMS</h3>
+                    <div class="market-stat">
+                        <div class="stat-number">$252.70B</div>
+                        <div>US Market Size | 15.22% CAGR</div>
+                        <div class="sub-stat">
+                            Global Markets: 3PL: $1.10T | TMS: $4.40B | WMS: $2.70B
+                        </div>
+                    </div>
+                    <ul>
+                        <li>Convergence of TMS, WMS, and 3PL systems</li>
+                        <li>Real-time optimization & multi-modal planning</li>
+                        <li>AI/ML enhanced route optimization</li>
+                        <li>IoT and blockchain integration</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Health Data</h3>
+                    <div class="market-stat">
+                        <div class="stat-number">$5.70B</div>
+                        <div>2025 Market Size</div>
+                    </div>
+                    <ul>
+                        <li>FHIR-based solutions</li>
+                        <li>Clinical decision support</li>
+                        <li>Data integration platforms</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="my-story" class="tab-content">
+            <h2>Personal Mission & Vision</h2>
+            <div class="quote">
+                Going where others won't and doing what others don't,<br>
+                Not because others aren't, but because others should and yet, won't.
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Distance Traveled</h3>
+                    <ul>
+                        <li>Rural Nepal to US: Overcoming challenges/embracing opportunities</li>
+                        <li>Technical specialist to investor transition</li>
+                        <li>Individual contributor and manager - with & without authority</li>
+                        <li>Founder & operator experience</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Commitment to Excellence</h3>
+                    <ul>
+                        <li>Promoting underrepresented founders</li>
+                        <li>Driving efficient and resilient global systems</li>
+                         <li>Working with best-in-class talents</li>
+                        <li>Adding a net positive value</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+                <!-- Add these new tab content divs right before the closing </div> of the tabs container -->
+        <div id="thesis-deep-dive" class="tab-content">
+            <h2>Thesis Deep-Dive</h2>
+            <div class="pdf-container">
+                <div class="pdf-navigation">
+                    <div class="pdf-selector">
+                        <button class="pdf-tab active" onclick="switchPDF('sci-tms')">
+                            <span class="pdf-icon">📦</span>
+                            <span class="pdf-title">Supply Chain Software Ecosystem</span>
+                        </button>
+                        <button class="pdf-tab" onclick="switchPDF('linkedin-article1')">
+                            <span class="pdf-icon">🚚</span>
+                            <span class="pdf-title">Integrated Logistics Software</span>
+                        </button>
+                        <button class="pdf-tab" onclick="switchPDF('linkedin-article2')">
+                            <span class="pdf-icon">📋</span>
+                            <span class="pdf-title">AI Agents for Supply & Demand Planning</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="pdf-viewer">
+                    <iframe id="sci-tms" class="pdf-frame active"
+                src="https://docs.google.com/viewer?url=https://github.com/NUbivek/NUbivek.github.io/raw/main/SCI%20%26%20Mixed-TMS_AgenticSolutionThesis.pdf&embedded=true"
+                frameborder="0" width="100%" height="700px" loading="lazy">
+                    </iframe>
+                    <iframe id="linkedin-article1" class="pdf-frame"
+                        src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7282123427535040512"
+                        frameborder="0" width="100%" height="700px" style="display: none;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                    <iframe id="linkedin-article2" class="pdf-frame"
+                        src="https://www.linkedin.com/embed/feed/update/urn:li:share:7280613944342265857"
+                        frameborder="0" width="100%" height="700px" style="display: none;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div id="investment-memo" class="tab-content">
+            <h2>Investment Memos</h2>
+            <div class="pdf-container">
+                <div class="pdf-navigation">
+                    <div class="pdf-selector">
+                        <button class="pdf-tab active" onclick="switchMemo('orderful')">
+                            <span class="pdf-icon">📊</span>
+                            <span class="pdf-title">Orderful</span>
+                        </button>
+                        <button class="pdf-tab" onclick="switchMemo('memo2')">
+                            <span class="pdf-icon">📝</span>
+                            <span class="pdf-title">Memo 2</span>
+                        </button>
+                        <button class="pdf-tab" onclick="switchMemo('memo3')">
+                            <span class="pdf-icon">📈</span>
+                            <span class="pdf-title">Memo 3</span>
+                        </button>
+                    </div>
+                </div>
+        
+                <!-- Orderful Content -->
+                <div id="orderful" class="memo-content active">
+                    <div class="subtab-navigation">
+                        <button class="subtab-button active" onclick="switchSubtab('dashboard')">Dashboard</button>
+                        <button class="subtab-button" onclick="switchSubtab('topic2')">Topic 2</button>
+                        <button class="subtab-button" onclick="switchSubtab('topic3')">Topic 3</button>
+                        <button class="subtab-button" onclick="switchSubtab('topic4')">Topic 4</button>
+                        <button class="subtab-button" onclick="switchSubtab('topic5')">Topic 5</button>
+                    </div>
+
+                                 <div id="dashboard" class="subtab-content active">
+                               <div id="investor-dashboard">
+                                   <!-- Theme Toggle -->
+                                   <div class="theme-switch-container">
+                                       <button id="themeToggle" aria-label="Toggle theme">
+                                           <span class="theme-icon"></span>
+                                       </button>
+                                   </div>
+                           
+                                   <div class="dashboard-container">
+                                       <!-- Loading State -->
+                                       <div class="loading-overlay">
+                                           <div class="loading-spinner"></div>
+                                           <p>Loading dashboard...</p>
+                                       </div>
+                           
+                                       <!-- Top Section -->
+                                       <div class="metrics-grid top-section">
+                                           <!-- Financial KPIs -->
+                                           <div class="section financial">
+                                               <h2>Financial Performance</h2>
+                                               <div class="kpi-grid">
+                                                   <!-- Row 1 -->
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="100">
+                                                       <h3>Revenue CAGR</h3>
+                                                       <p class="value stat-number">141%</p>
+                                                       <span class="trend">Exceptional growth</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="200">
+                                                       <h3>Gross Margin</h3>
+                                                       <p class="value stat-number">95.03%</p>
+                                                       <span class="trend">Elite</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="300">
+                                                       <h3>Rule of 40</h3>
+                                                       <p class="value stat-number">216%</p>
+                                                       <span class="trend">Best-in-class</span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           
+                                           <!-- Operational KPIs -->
+                                           <div class="section operational">
+                                               <h2>Operational Excellence</h2>
+                                               <div class="kpi-grid">
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="100">
+                                                       <h3>Network Partners</h3>
+                                                       <p class="value stat-number">10,000+</p>
+                                                       <span class="trend">Strong network effects</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="200">
+                                                       <h3>Implementation Time</h3>
+                                                       <p class="value stat-number">9</p>
+                                                       <span class="trend">5x faster</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="300">
+                                                       <h3>System Uptime</h3>
+                                                       <p class="value stat-number">99.99%</p>
+                                                       <span class="trend">Enterprise-grade</span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                           
+                                       <!-- Charts Section -->
+                                       <div class="charts-section">
+                                           <div class="chart-navigation">
+                                               <button class="nav-button prev">←</button>
+                                               <button class="nav-button next">→</button>
+                                               
+                                               <div class="chart-indicators">
+                                                   <span class="indicator active" data-index="0"></span>
+                                                   <span class="indicator" data-index="1"></span>
+                                                   <span class="indicator" data-index="2"></span>
+                                               </div>
+                                           </div>
+                           
+                                           <div class="chart-carousel">
+                                               <!-- Financial Charts -->
+                                               <div class="chart-slide active">
+                                                   <h3>Revenue & Growth</h3>
+                                                   <div class="chart-container glass">
+                                                       <canvas id="revenueChart"></canvas>
+                                                   </div>
+                                               </div>
+                                               <div class="chart-slide">
+                                                   <h3>Unit Economics</h3>
+                                                   <div class="chart-container glass">
+                                                       <canvas id="unitEconomicsChart"></canvas>
+                                                   </div>
+                                               </div>
+                                               <div class="chart-slide">
+                                                   <h3>Efficiency Metrics</h3>
+                                                   <div class="chart-container glass">
+                                                       <canvas id="efficiencyChart"></canvas>
+                                                   </div>
+                                               </div>
+                                               <!-- Operational Charts -->
+                                               <div class="chart-slide">
+                                                   <h3>Implementation Timeline</h3>
+                                                   <div class="chart-container glass">
+                                                       <canvas id="implementationChart"></canvas>
+                                                   </div>
+                                               </div>
+                                               <div class="chart-slide">
+                                                   <h3>Market Coverage</h3>
+                                                   <div class="chart-container glass">
+                                                       <canvas id="marketCoverageChart"></canvas>
+                                                   </div>
+                                               </div>
+                                               <div class="chart-slide">
+                                                   <h3>ROI Impact</h3>
+                                                   <div class="chart-container glass">
+                                                       <canvas id="roiChart"></canvas>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                           
+                                       <!-- Bottom Section -->
+                                       <div class="metrics-grid bottom-section">
+                                           <!-- Financial Bottom Metrics -->
+                                           <div class="section financial">
+                                               <h2>Financial Efficiency</h2>
+                                               <div class="metrics-container">
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="100">
+                                                       <h3>ARR per Customer</h3>
+                                                       <p class="value stat-number">$33,043</p>
+                                                       <span class="trend">Expanding</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="200">
+                                                       <h3>ARR per Employee</h3>
+                                                       <p class="value stat-number">$449,184</p>
+                                                       <span class="trend">79% CAGR</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="300">
+                                                       <h3>Burn Multiple</h3>
+                                                       <p class="value stat-number">-0.24</p>
+                                                       <span class="trend">Efficient</span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           
+                                           <!-- Operational Bottom Metrics -->
+                                           <div class="section operational">
+                                               <h2>Operational Impact</h2>
+                                               <div class="metrics-container">
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="100">
+                                                       <h3>Transaction Volume</h3>
+                                                       <p class="value stat-number">265M</p>
+                                                       <span class="trend">Annual</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="200">
+                                                       <h3>Success Rate</h3>
+                                                       <p class="value stat-number">100%</p>
+                                                       <span class="trend">Perfect</span>
+                                                   </div>
+                                                   <div class="metric-card glass" data-animation="fade-in" data-delay="300">
+                                                       <h3>Partner Growth</h3>
+                                                       <p class="value stat-number">156%</p>
+                                                       <span class="trend">YoY</span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                   
+                                                                       
+                    <div id="topic2" class="subtab-content">Topic 2 Content</div>
+                    <div id="topic3" class="subtab-content">Topic 3 Content</div>
+                    <div id="topic4" class="subtab-content">Topic 4 Content</div>
+                    <div id="topic5" class="subtab-content">Topic 5 Content</div>
+                </div>
+        
+                <div id="memo2" class="memo-content">Memo 2 Content</div>
+                <div id="memo3" class="memo-content">Memo 3 Content</div>
+            </div>
+        </div>
+
+        
+        <div id="sample-deals" class="tab-content">
+            <h2>Sample Deals</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <!-- Add your content here -->
+                </div>
+                <div class="card">
+                    <!-- Add your content here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script>
+        // Enhanced Tab Switching
+        function openTab(tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            const tabButtons = document.getElementsByClassName("tab-button");
+            
+            Array.from(tabContents).forEach(tab => {
+                tab.classList.remove("active");
+                tab.style.opacity = 0;
+            });
+            
+            Array.from(tabButtons).forEach(button => {
+                button.classList.remove("active");
+            });
+            
+            const selectedTab = document.getElementById(tabName);
+            selectedTab.classList.add("active");
+            
+            setTimeout(() => {
+                selectedTab.style.opacity = 1;
+            }, 50);
+            
+            event.currentTarget.classList.add("active");
+        }
+
+        function switchPDF(pdfId) {
+            // Hide all PDFs
+            document.querySelectorAll('.pdf-frame').forEach(frame => {
+                frame.style.display = 'none';
+                frame.classList.remove('active');
+            });
+            
+            // Show selected PDF
+            const selectedPDF = document.getElementById(pdfId);
+            if (selectedPDF) {
+                selectedPDF.style.display = 'block';
+                selectedPDF.classList.add('active');
+            }
+            
+            // Update tab styling
+            document.querySelectorAll('.pdf-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+        
+      function initTheme() {
+    const themeToggle = document.getElementById('themeToggle');
+
+        function switchMemo(memoId) {
+            document.querySelectorAll('.memo-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.pdf-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(memoId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        function switchSubtab(subtabId) {
+            document.querySelectorAll('.subtab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.subtab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(subtabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Initialize the dashboard when the tab is opened
+        document.addEventListener('DOMContentLoaded', function() {
+            const dashboardContainer = document.getElementById('investor-dashboard');
+            if (dashboardContainer) {
+                // Initialize your React dashboard component here
+                ReactDOM.render(
+                    React.createElement(InvestorDashboard),
+                    dashboardContainer
+                );
+            }
+        });
+
+          
+    // Remove system preference check and set light mode as default
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-theme');
+        themeToggle.classList.add('dark');
+    } else {
+        // Explicitly set light mode
+        document.body.classList.remove('dark-theme');
+        themeToggle.classList.remove('dark');
+        localStorage.setItem('darkMode', 'false');
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        themeToggle.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-theme'));
+    });
+          
+}
+document.addEventListener('DOMContentLoaded', function() {
+    // Existing animation code...
+    
+    // Add dark theme initialization
+    initTheme();
+});
+
+       
+        // Scroll Animation
+        function checkScroll() {
+            const elements = document.querySelectorAll('.experience-box, .card');
+            const windowHeight = window.innerHeight;
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight * 0.85) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Number Counter Animation
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkScroll();
+            
+            // Animate numbers
+            document.querySelectorAll('.stat-number').forEach(stat => {
+                const value = parseInt(stat.innerText.replace(/[^0-9.-]+/g,""));
+                if (!isNaN(value)) {
+                    animateValue(stat, 0, value, 2000);
+                }
+            });
+
+            // Initial animations
+            document.querySelectorAll('.card, .experience-box').forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    element.style.opacity = 1;
+                    element.style.transform = 'translateY(0)';
+                }, 300);
+            });
+        });
+
+        // Optimized scroll listener
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    checkScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+    </script>
+    <script>
+    // Enhanced Tab Switching
+    function openTab(tabName) {
+        const tabContents = document.getElementsByClassName("tab-content");
+        const tabButtons = document.getElementsByClassName("tab-button");
+        
+        Array.from(tabContents).forEach(tab => {
+            tab.classList.remove("active");
+        });
+        
+        Array.from(tabButtons).forEach(button => {
+            button.classList.remove("active");
+        });
+        
+        document.getElementById(tabName).classList.add("active");
+        event.currentTarget.classList.add("active");
+    }
+
+    // Number Counter Animation with Currency Formatting
+    function animateValue(obj, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            
+            // Extract unit (B or T) from the original text
+            const originalText = obj.getAttribute('data-value');
+            const unit = originalText.slice(-1);
+            
+            // Format number with $ sign, 2 decimal places, and unit
+            const currentValue = (progress * (end - start) + start).toFixed(2);
+            obj.innerHTML = `$${currentValue}${unit}`;
+            
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    // Initialize animations
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.stat-number').forEach(stat => {
+            // Store original value as data attribute
+            const originalText = stat.innerText;
+            stat.setAttribute('data-value', originalText);
+            
+            // Extract just the number
+            const value = parseFloat(originalText.replace(/[^0-9.-]+/g,""));
+            if (!isNaN(value)) {
+                animateValue(stat, 0, value, 2000);
+            }
+        });
+    });
+</script>
+</body>
+</html>
