@@ -34,6 +34,7 @@ const operationalData = {
     }
 };
 
+
 // Theme Configuration
 function getThemeColors(isDark) {
     return {
@@ -50,6 +51,51 @@ function getThemeColors(isDark) {
         }
     };
 }
+
+// Chart Navigation Functions
+function initChartNavigation() {
+    const sections = ['financial', 'operational'];
+    
+    sections.forEach(section => {
+        const container = document.querySelector(`.section.${section} .chart-container`);
+        const charts = container.querySelectorAll('canvas');
+        const dots = document.querySelectorAll(`.section.${section} .dot`);
+        const prevBtn = document.querySelector(`.section.${section} .nav-arrow.left`);
+        const nextBtn = document.querySelector(`.section.${section} .nav-arrow.right`);
+        let currentIndex = 0;
+
+        function showChart(index) {
+            charts.forEach(chart => chart.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            charts[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentIndex = index;
+        }
+
+        function nextChart() {
+            const nextIndex = (currentIndex + 1) % charts.length;
+            showChart(nextIndex);
+        }
+
+        function prevChart() {
+            const prevIndex = (currentIndex - 1 + charts.length) % charts.length;
+            showChart(prevIndex);
+        }
+
+        // Initialize first chart
+        showChart(0);
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextChart);
+        prevBtn.addEventListener('click', prevChart);
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showChart(index));
+        });
+    });
+}
+
 
 // Chart Creation Functions
 function createRevenueChart() {
@@ -97,12 +143,6 @@ function createRevenueChart() {
                 y: {
                     grid: { color: colors.grid },
                     ticks: { color: colors.text }
-                }
-            },
-            animations: {
-                tension: {
-                    duration: 1000,
-                    easing: 'linear'
                 }
             }
         }
@@ -327,16 +367,21 @@ function updateChartsTheme() {
     });
 }
 
-// Initialization
+// Initialize dashboard
 function initDashboard() {
-    createRevenueChart();
-    createUnitEconomicsChart();
-    createEfficiencyChart();
-    createImplementationChart();
-    createMarketCoverageChart();
-    createROIChart();
+    const charts = [
+        createRevenueChart,
+        createUnitEconomicsChart,
+        createEfficiencyChart,
+        createImplementationChart,
+        createMarketCoverageChart,
+        createROIChart
+    ];
     
-    // Theme change listener
+    charts.forEach(chart => chart());
+    initChartNavigation();
+    
+ // Theme change listener
     document.getElementById('themeToggle').addEventListener('click', updateChartsTheme);
 }
 
@@ -346,6 +391,39 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(initDashboard, 100);
     }
 });
+
+// Add to your existing JavaScript
+function initDashboardAnimations() {
+    // Staggered entry animation for metric cards
+    gsap.from('.metric-card', {
+        duration: 0.6,
+        y: 30,
+        opacity: 0,
+        stagger: 0.1,
+        ease: 'power3.out'
+    });
+
+    // Chart reveal animations
+    gsap.from('.chart-container', {
+        duration: 0.8,
+        opacity: 0,
+        y: 20,
+        stagger: 0.2,
+        ease: 'power2.out',
+        delay: 0.3
+    });
+}
+
+// Add smooth transitions for theme switching
+function updateThemeWithAnimation() {
+    gsap.to('body', {
+        duration: 0.3,
+        backgroundColor: document.body.classList.contains('dark-theme') ? '#1a202c' : '#ffffff',
+        ease: 'power2.inOut'
+    });
+}
+
+
 
 // Tab switching
 function switchSubtab(subtabId) {
