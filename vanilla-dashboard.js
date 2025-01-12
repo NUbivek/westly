@@ -47,14 +47,26 @@ function initDashboard() {
     }
 
     try {
-        const charts = [
-            createRevenueChart,
-            createUnitEconomicsChart,
-            createEfficiencyChart,
-            createImplementationChart,
-            createMarketCoverageChart,
-            createROIChart
-        ];
+       const charts = [
+        // Existing charts
+        createRevenueChart,
+        createUnitEconomicsChart,
+        createEfficiencyChart,
+        createImplementationChart,
+        createMarketCoverageChart,
+        createROIChart,
+        // New charts
+        createRevenueGrowthChart,
+        createBurnMarginChart,
+        createRevenueStreamsChart,
+        createCostScalingChart,
+        createHeadcountEfficiencyChart,
+        createDeploymentTimelineChart,
+        createSupportMetricsChart,
+        createMarketPenetrationChart,
+        createPartnerGrowthChart,
+        createTeamCompositionChart
+    ];
         
         // Initialize charts with error handling
         charts.forEach(chart => {
@@ -108,72 +120,6 @@ function getThemeColors(isDark) {
 
 
 
-// Chart Navigation Functions
-function initChartNavigation() {
-    const sections = ['financial', 'operational'];
-    
-    sections.forEach(section => {
-        const container = document.querySelector(`.section.${section} .chart-container`);
-        const charts = container.querySelectorAll('canvas');
-        const dots = document.querySelectorAll(`.section.${section} .dot`);
-        const prevBtn = document.querySelector(`.section.${section} .nav-arrow.left`);
-        const nextBtn = document.querySelector(`.section.${section} .nav-arrow.right`);
-        let currentIndex = 0;
-
-        function nextChart() {
-            const nextIndex = (currentIndex + 1) % charts.length;
-            showChart(nextIndex, section);
-            currentIndex = nextIndex;
-        }
-        
-        function prevChart() {
-            const prevIndex = (currentIndex - 1 + charts.length) % charts.length;
-            showChart(prevIndex, section);
-            currentIndex = prevIndex;
-        }
-        
-        // Initialize first chart
-        showChart(0, section);
-
-        // Add in initChartNavigation
-        prevBtn.addEventListener('click', prevChart);
-        nextBtn.addEventListener('click', nextChart);
-
-        
-        // Event listeners
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => showChart(index, section));
-        });
-
-    });
-}
-
-// Standalone function outside any other function
-function showChart(index, section) {
-    const container = document.querySelector(`.section.${section} .chart-container`);
-    const charts = container.querySelectorAll('canvas');
-    const dots = document.querySelectorAll(`.section.${section} .dot`);
-    
-    // Reset all charts and dots
-    charts.forEach(chart => {
-        chart.style.display = 'none';
-        chart.classList.remove('active');
-    });
-    dots.forEach(dot => dot.classList.remove('active'));
-    
-    // Show selected chart and dot
-    if (charts[index]) {
-        charts[index].style.display = 'block';
-        charts[index].classList.add('active');
-        dots[index]?.classList.add('active');
-        
-        // Force chart redraw
-        const chartInstance = Chart.getChart(charts[index]);
-        if (chartInstance) {
-            chartInstance.update();
-        }
-    }
-}
 
 function createRevenueChart() {
     const ctx = document.getElementById('revenueChart').getContext('2d');
@@ -689,9 +635,751 @@ function createROIChart() {
     });
 }
 
+function createRevenueGrowthChart() {
+    const ctx = document.getElementById('revenueGrowthChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: financialData.revenue.map(d => d.year),
+            datasets: [
+                {
+                    label: 'Revenue ($M)',
+                    data: financialData.revenue.map(d => d.revenue),
+                    borderColor: colors.financial.primary,
+                    backgroundColor: colors.financial.primary + '20',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'ARR ($M)',
+                    data: financialData.revenue.map(d => d.arr),
+                    borderColor: colors.financial.secondary,
+                    backgroundColor: colors.financial.secondary + '20',
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Revenue Growth',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                        color: colors.text,
+                        boxWidth: 12,
+                        padding: 20
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+
+
+function createBurnMarginChart() {
+    const ctx = document.getElementById('burnMarginChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Burn Multiple vs Margin',
+                data: [
+                    {x: 1.96, y: 74.19},
+                    {x: -0.24, y: 95.02},
+                    {x: -0.24, y: 95.03}
+                ],
+                backgroundColor: colors.financial.primary,
+                borderColor: colors.financial.secondary,
+                pointRadius: 8,
+                pointHoverRadius: 12
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Burn Margin',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Burn Multiple'
+                    },
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Gross Margin (%)'
+                    },
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+
+function createRevenueStreamsChart() {
+    const ctx = document.getElementById('revenueStreamsChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Base', 'Enterprise', 'Growth', 'Scale'],
+            datasets: [{
+                label: 'Revenue Streams',
+                data: [23988, 54600, 44280, 26040],
+                backgroundColor: [
+                    colors.financial.primary,
+                    colors.financial.primary + 'CC',
+                    colors.financial.primary + '99',
+                    colors.financial.primary + '66'
+                ],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Revenue Streams',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+
+function createCostScalingChart() {
+    const ctx = document.getElementById('costScalingChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['FY24', 'FY25', 'FY26'],
+            datasets: [
+                {
+                    label: 'Engineering',
+                    data: [5.18, 7.62, 9.03],
+                    borderColor: colors.financial.primary,
+                    backgroundColor: colors.financial.primary + '40',
+                    fill: true
+                },
+                {
+                    label: 'Sales',
+                    data: [2.80, 4.53, 5.94],
+                    borderColor: colors.financial.secondary,
+                    backgroundColor: colors.financial.secondary + '40',
+                    fill: true
+                },
+                {
+                    label: 'Customer Success',
+                    data: [2.08, 3.21, 3.86],
+                    borderColor: colors.operational.primary,
+                    backgroundColor: colors.operational.primary + '40',
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Cost Scaling',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                        color: colors.text,
+                        boxWidth: 12,
+                        padding: 20
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+
+function createHeadcountEfficiencyChart() {
+    const ctx = document.getElementById('headcountEfficiencyChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['FY24', 'FY25', 'FY26'],
+            datasets: [{
+                label: 'Revenue per Employee ($K)',
+                data: [140.8, 245.5, 449.2],
+                backgroundColor: colors.financial.primary,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Headcount Efficiency',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+
+function createDeploymentTimelineChart() {
+    const ctx = document.getElementById('deploymentTimelineChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Enterprise', 'SMB', 'Self-Service'],
+            datasets: [
+                {
+                    label: 'Orderful (Days)',
+                    data: [9, 5, 1],
+                    backgroundColor: colors.operational.primary,
+                    borderRadius: 6
+                },
+                {
+                    label: 'Industry Average',
+                    data: [45, 30, 14],
+                    backgroundColor: colors.operational.secondary,
+                    borderRadius: 6
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Deployment Timeline',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                        color: colors.text,
+                        boxWidth: 12,
+                        padding: 20
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                },
+                y: {
+                    ticks: { color: colors.text },
+                    grid: { display: false }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+
+function createSupportMetricsChart() {
+    const ctx = document.getElementById('supportMetricsChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: [
+                'Response Time',
+                'Resolution Time',
+                'Customer Satisfaction',
+                'Support Efficiency'
+            ],
+            datasets: [{
+                label: 'Support Metrics',
+                data: [99, 95, 98, 95],
+                backgroundColor: colors.operational.primary + '40',
+                borderColor: colors.operational.primary,
+                pointBackgroundColor: colors.operational.secondary,
+                pointBorderColor: colors.operational.primary,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Support Metrics',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                r: {
+                    angleLines: {
+                        color: colors.grid + '40'
+                    },
+                    grid: {
+                        color: colors.grid + '20'
+                    },
+                    pointLabels: {
+                        color: colors.text
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        max: 100,
+                        color: colors.text
+                    }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+function createMarketPenetrationChart() {
+    const ctx = document.getElementById('marketPenetrationChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Retail/eComm', 'Logistics', 'Manufacturing', 'Healthcare'],
+            datasets: [{
+                data: [3000, 2000, 1500, 1000],
+                backgroundColor: [
+                    colors.operational.primary,
+                    colors.operational.primary + 'CC',
+                    colors.operational.primary + '99',
+                    colors.operational.primary + '66'
+                ],
+                borderWidth: 2,
+                borderColor: colors.background
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Market Penetration',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: colors.text,
+                        boxWidth: 12,
+                        padding: 20
+                    }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+function createPartnerGrowthChart() {
+    const ctx = document.getElementById('partnerGrowthChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['FY24', 'FY25', 'FY26'],
+            datasets: [
+                {
+                    label: 'Partners',
+                    type: 'bar',
+                    data: [5000, 6500, 8000],
+                    backgroundColor: colors.operational.primary,
+                    borderRadius: 6,
+                    order: 2
+                },
+                {
+                    label: 'Growth Rate (%)',
+                    type: 'line',
+                    data: [156, 130, 123],
+                    borderColor: colors.operational.secondary,
+                    backgroundColor: colors.operational.secondary + '20',
+                    tension: 0.4,
+                    order: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Partner Growth',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                        color: colors.text,
+                        boxWidth: 12,
+                        padding: 20
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid + '20' }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
+
+function createTeamCompositionChart() {
+    const ctx = document.getElementById('teamCompositionChart').getContext('2d');
+    const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
+    return new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Engineering', 'Sales', 'Customer Success', 'Product'],
+            datasets: [{
+                data: [28, 18, 15, 12],
+                backgroundColor: [
+                    colors.operational.primary,
+                    colors.operational.primary + 'CC',
+                    colors.operational.primary + '99',
+                    colors.operational.primary + '66'
+                ],
+                borderWidth: 2,
+                borderColor: colors.background
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Team Scaling',
+                    align: 'start',
+                    color: colors.text,
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                        family: 'system-ui, -apple-system, sans-serif'
+                    }
+                },
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: colors.text,
+                        boxWidth: 12,
+                        padding: 20
+                    }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+}
 
 
 
+///////
+function initChartNavigation() {
+    const sections = ['financial', 'operational'];
+    
+    sections.forEach(section => {
+        const container = document.querySelector(`.section.${section} .chart-container`);
+        const dotsContainer = document.querySelector(`.section.${section} .slide-dots`);
+        const charts = container.querySelectorAll('canvas');
+        const prevBtn = document.querySelector(`.section.${section} .nav-arrow.left`);
+        const nextBtn = document.querySelector(`.section.${section} .nav-arrow.right`);
+        let currentIndex = 0;
+
+        // Clear existing dots
+        dotsContainer.innerHTML = '';
+        
+        // Create dots dynamically
+        charts.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.className = `dot ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => {
+                showChart(index, section);
+                currentIndex = index;
+            });
+            dotsContainer.appendChild(dot);
+        });
+
+        function nextChart() {
+            const nextIndex = (currentIndex + 1) % charts.length;
+            showChart(nextIndex, section);
+            currentIndex = nextIndex;
+        }
+        
+        function prevChart() {
+            const prevIndex = (currentIndex - 1 + charts.length) % charts.length;
+            showChart(prevIndex, section);
+            currentIndex = prevIndex;
+        }
+        
+        // Initialize first chart
+        showChart(0, section);
+
+        // Add event listeners
+        prevBtn.addEventListener('click', prevChart);
+        nextBtn.addEventListener('click', nextChart);
+
+        // Update arrow states
+        function updateArrowStates() {
+            prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+            nextBtn.style.opacity = currentIndex === charts.length - 1 ? '0.5' : '1';
+        }
+
+        // Initial arrow states
+        updateArrowStates();
+    });
+}
+
+function getChartFunction(chartId) {
+    const chartFunctions = {
+        'revenueChart': createRevenueChart,
+        'unitEconomicsChart': createUnitEconomicsChart,
+        'efficiencyChart': createEfficiencyChart,
+        'implementationChart': createImplementationChart,
+        'marketCoverageChart': createMarketCoverageChart,
+        'roiChart': createROIChart,
+        'revenueGrowthChart': createRevenueGrowthChart,
+        'burnMarginChart': createBurnMarginChart,
+        'revenueStreamsChart': createRevenueStreamsChart,
+        'costScalingChart': createCostScalingChart,
+        'headcountEfficiencyChart': createHeadcountEfficiencyChart,
+        'deploymentTimelineChart': createDeploymentTimelineChart,
+        'supportMetricsChart': createSupportMetricsChart,
+        'marketPenetrationChart': createMarketPenetrationChart,
+        'partnerGrowthChart': createPartnerGrowthChart,
+        'teamCompositionChart': createTeamCompositionChart
+    };
+    
+    return chartFunctions[chartId];
+}
+
+
+
+function showChart(index, section) {
+    const container = document.querySelector(`.section.${section} .chart-container`);
+    if (!container) return;
+    
+    const charts = container.querySelectorAll('canvas');
+    const dots = document.querySelector(`.section.${section} .slide-dots`).children;
+    
+    charts.forEach((chart, i) => {
+        chart.style.display = i === index ? 'block' : 'none';
+        chart.classList.toggle('active', i === index);
+        
+        // Only destroy/recreate the active chart
+        const chartInstance = Chart.getChart(chart);
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+        if (i === index) {
+            const chartFunction = getChartFunction(chart.id);
+            if (chartFunction) {
+                chartFunction();
+            }
+        }
+    });
+    
+    Array.from(dots).forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
 
 
 
@@ -755,21 +1443,34 @@ function updateChartsTheme() {
 
 
 
+
 // Initialize when DOM is loaded
+// Update the initialization code
 document.addEventListener('DOMContentLoaded', function() {
     const dashboard = document.getElementById('dashboard');
     if (dashboard?.classList.contains('active')) {
         setTimeout(() => {
             try {
                 initDashboard();
-                showChart(0, 'financial');
-                showChart(0, 'operational');
+                
+                // Wait for charts to be created
+                setTimeout(() => {
+                    // Initialize navigation
+                    initChartNavigation();
+                    
+                    // Then show initial charts
+                    showChart(0, 'financial');
+                    showChart(0, 'operational');
+                }, 500);
+                
             } catch (error) {
                 console.error('Dashboard initialization failed:', error);
             }
-        }, 100);
+        }, 300);
     }
 });
+
+
 
 // Update switchSubtab
 function switchSubtab(subtabId) {
