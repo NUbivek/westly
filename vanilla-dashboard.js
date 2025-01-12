@@ -34,23 +34,74 @@ const operationalData = {
     }
 };
 
+function initDashboard() {
+    // Ensure Chart.js is loaded
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js not loaded');
+        return;
+    }
 
-// Theme Configuration
+    try {
+        const charts = [
+            createRevenueChart,
+            createUnitEconomicsChart,
+            createEfficiencyChart,
+            createImplementationChart,
+            createMarketCoverageChart,
+            createROIChart
+        ];
+        
+        // Initialize charts with error handling
+        charts.forEach(chart => {
+            try {
+                chart();
+            } catch (error) {
+                console.error(`Error creating chart: ${error.message}`);
+            }
+        });
+
+        // Initialize navigation and animations
+        initChartNavigation();
+        initDashboardAnimations();
+        
+        // Theme toggle listener
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                updateChartsTheme();
+                updateThemeWithAnimation();
+            });
+        }
+    } catch (error) {
+        console.error(`Dashboard initialization failed: ${error.message}`);
+    }
+}
+
+
+
 function getThemeColors(isDark) {
     return {
-        background: isDark ? '#1f2937' : '#ffffff',
-        text: isDark ? '#f7fafc' : '#1f2937',
-        grid: isDark ? '#374151' : '#e2e8f0',
+        background: isDark ? 'rgba(30, 41, 59, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+        text: isDark ? '#e2e8f0' : '#2d3748',
+        grid: isDark ? '#475569' : '#e2e8f0',
         financial: {
-            primary: isDark ? '#60a5fa' : '#1e40af',
-            secondary: isDark ? '#93c5fd' : '#3b82f6'
+            primary: isDark ? '#60a5fa' : '#3b82f6',
+            secondary: isDark ? '#93c5fd' : '#60a5fa',
+            gradient: isDark ? 
+                ['rgba(96, 165, 250, 0.8)', 'rgba(147, 197, 253, 0.8)'] :
+                ['rgba(59, 130, 246, 0.8)', 'rgba(96, 165, 250, 0.8)']
         },
         operational: {
-            primary: isDark ? '#475569' : '#0f172a',
-            secondary: isDark ? '#64748b' : '#1f2937'
+            primary: isDark ? '#818cf8' : '#4f46e5',
+            secondary: isDark ? '#a5b4fc' : '#818cf8',
+            gradient: isDark ?
+                ['rgba(129, 140, 248, 0.8)', 'rgba(165, 180, 252, 0.8)'] :
+                ['rgba(79, 70, 229, 0.8)', 'rgba(129, 140, 248, 0.8)']
         }
     };
 }
+
+
 
 // Chart Navigation Functions
 function initChartNavigation() {
@@ -64,40 +115,66 @@ function initChartNavigation() {
         const nextBtn = document.querySelector(`.section.${section} .nav-arrow.right`);
         let currentIndex = 0;
 
-        function showChart(index) {
-            charts.forEach(chart => chart.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            charts[index].classList.add('active');
-            dots[index].classList.add('active');
-            currentIndex = index;
-        }
-
         function nextChart() {
             const nextIndex = (currentIndex + 1) % charts.length;
-            showChart(nextIndex);
+            showChart(nextIndex, section);
+            currentIndex = nextIndex;
         }
-
+        
         function prevChart() {
             const prevIndex = (currentIndex - 1 + charts.length) % charts.length;
-            showChart(prevIndex);
+            showChart(prevIndex, section);
+            currentIndex = prevIndex;
         }
-
-        // Initialize first chart
-        showChart(0);
-
-        // Event listeners
-        nextBtn.addEventListener('click', nextChart);
-        prevBtn.addEventListener('click', prevChart);
         
+        // Initialize first chart
+        showChart(0, section);
+
+        // Add in initChartNavigation
+        prevBtn.addEventListener('click', prevChart);
+        nextBtn.addEventListener('click', nextChart);
+
+        
+        // Event listeners
         dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => showChart(index));
+            dot.addEventListener('click', () => showChart(index, section));
         });
+
     });
 }
 
+// Standalone function outside any other function
+function showChart(index, section) {
+    const container = document.querySelector(`.section.${section} .chart-container`);
+    const charts = container.querySelectorAll('canvas');
+    const dots = document.querySelectorAll(`.section.${section} .dot`);
+    
+    // Reset all charts and dots
+    charts.forEach(chart => {
+        chart.style.display = 'none';
+        chart.classList.remove('active');
+    });
+    dots.forEach(dot => dot.classList.remove('active'));
+    
+    // Show selected chart and dot
+    if (charts[index]) {
+        charts[index].style.display = 'block';
+        charts[index].classList.add('active');
+        dots[index]?.classList.add('active');
+        
+        // Force chart redraw
+        const chartInstance = Chart.getChart(charts[index]);
+        if (chartInstance) {
+            chartInstance.update();
+        }
+    }
+}
 
-// Chart Creation Functions
+
+
+
+
+// Updated Chart Creation Functions with new chart types
 function createRevenueChart() {
     const ctx = document.getElementById('revenueChart').getContext('2d');
     const colors = getThemeColors(document.body.classList.contains('dark-theme'));
@@ -111,39 +188,30 @@ function createRevenueChart() {
                     label: 'Revenue ($M)',
                     data: financialData.revenue.map(d => d.revenue),
                     borderColor: colors.financial.primary,
-                    backgroundColor: colors.financial.primary + '40',
-                    fill: true
+                    tension: 0.4,
+                    fill: false
                 },
                 {
                     label: 'ARR ($M)',
                     data: financialData.revenue.map(d => d.arr),
                     borderColor: colors.financial.secondary,
-                    backgroundColor: colors.financial.secondary + '40',
-                    fill: true
+                    tension: 0.4,
+                    fill: false
                 }
             ]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Revenue & ARR Growth',
-                    color: colors.text
-                },
                 legend: {
+                    position: 'top',
                     labels: { color: colors.text }
                 }
             },
-            scales: {
-                x: {
-                    grid: { color: colors.grid },
-                    ticks: { color: colors.text }
-                },
-                y: {
-                    grid: { color: colors.grid },
-                    ticks: { color: colors.text }
-                }
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
             }
         }
     });
@@ -161,43 +229,31 @@ function createUnitEconomicsChart() {
                 {
                     label: 'Gross Margin (%)',
                     data: financialData.metrics.map(d => d.margin),
+                    backgroundColor: colors.financial.primary + '40',
                     borderColor: colors.financial.primary,
-                    yAxisID: 'y'
+                    fill: true
                 },
                 {
                     label: 'Rule of 40',
                     data: financialData.metrics.map(d => d.rule40),
+                    backgroundColor: colors.financial.secondary + '40',
                     borderColor: colors.financial.secondary,
-                    yAxisID: 'y1'
+                    fill: true
                 }
             ]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Unit Economics',
-                    color: colors.text
+                legend: {
+                    position: 'top',
+                    labels: { color: colors.text }
                 }
             },
-            scales: {
-                y: {
-                    type: 'linear',
-                    position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    position: 'right',
-                    grid: {
-                        drawOnChartArea: false
-                    }
-                }
-            },
-            animations: {
-                y: {
-                    duration: 2000
-                }
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
             }
         }
     });
@@ -208,35 +264,35 @@ function createEfficiencyChart() {
     const colors = getThemeColors(document.body.classList.contains('dark-theme'));
     
     return new Chart(ctx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
-            labels: financialData.metrics.map(d => d.year),
-            datasets: [
-                {
-                    label: 'ARR per Employee ($K)',
-                    data: financialData.revenue.map(d => d.arrPerEmployee/1000),
-                    backgroundColor: colors.financial.primary
-                },
-                {
-                    label: 'ARR per Customer ($K)',
-                    data: financialData.revenue.map(d => d.arrPerCustomer/1000),
-                    backgroundColor: colors.financial.secondary
-                }
-            ]
+            labels: ['ARR/Employee', 'ARR/Customer', 'NRR'],
+            datasets: [{
+                data: [
+                    financialData.revenue[2].arrPerEmployee/1000,
+                    financialData.revenue[2].arrPerCustomer/1000,
+                    financialData.metrics[2].nrr
+                ],
+                backgroundColor: [
+                    colors.financial.primary,
+                    colors.financial.secondary,
+                    colors.financial.primary + '80'
+                ]
+            }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Efficiency Metrics',
-                    color: colors.text
+                legend: {
+                    position: 'right',
+                    labels: { color: colors.text }
                 }
             },
-            animations: {
-                y: {
-                    duration: 2000
-                }
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 2000
             }
         }
     });
@@ -254,28 +310,30 @@ function createImplementationChart() {
                 {
                     label: 'Orderful (Days)',
                     data: operationalData.implementation.map(d => d.orderful),
-                    backgroundColor: colors.operational.primary
+                    backgroundColor: colors.operational.primary,
+                    borderRadius: 8
                 },
                 {
                     label: 'Industry Average',
                     data: operationalData.implementation.map(d => d.industry),
-                    backgroundColor: colors.operational.secondary
+                    backgroundColor: colors.operational.secondary,
+                    borderRadius: 8
                 }
             ]
         },
         options: {
+            indexAxis: 'y',
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Implementation Timeline',
-                    color: colors.text
+                legend: {
+                    position: 'top',
+                    labels: { color: colors.text }
                 }
             },
-            animations: {
-                y: {
-                    duration: 2000
-                }
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
             }
         }
     });
@@ -286,31 +344,32 @@ function createMarketCoverageChart() {
     const colors = getThemeColors(document.body.classList.contains('dark-theme'));
     
     return new Chart(ctx, {
-        type: 'polarArea',
+        type: 'pie',
         data: {
             labels: operationalData.marketCoverage.map(d => d.vertical),
             datasets: [{
                 data: operationalData.marketCoverage.map(d => d.partners),
                 backgroundColor: [
+                    colors.operational.primary,
                     colors.operational.primary + '80',
-                    colors.operational.primary + '60',
-                    colors.operational.secondary + '80',
-                    colors.operational.secondary + '60'
+                    colors.operational.secondary,
+                    colors.operational.secondary + '80'
                 ]
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Market Coverage',
-                    color: colors.text
+                legend: {
+                    position: 'right',
+                    labels: { color: colors.text }
                 }
             },
             animation: {
                 animateRotate: true,
-                animateScale: true
+                animateScale: true,
+                duration: 2000
             }
         }
     });
@@ -323,9 +382,9 @@ function createROIChart() {
     return new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['Labor Cost', 'Integration Time', 'Error Resolution', 'Implementation', 'Success Rate'],
+            labels: ['Labor Cost Savings', 'Integration Speed', 'Operational Efficiency', 'Success Rate', 'System Uptime'],
             datasets: [{
-                label: 'Improvement (%)',
+                label: 'Performance Metrics (%)',
                 data: [
                     operationalData.roi.laborCost,
                     operationalData.roi.integrationTime,
@@ -334,65 +393,135 @@ function createROIChart() {
                     operationalData.roi.uptime
                 ],
                 backgroundColor: colors.operational.primary + '40',
-                borderColor: colors.operational.primary
+                borderColor: colors.operational.primary,
+                pointBackgroundColor: colors.operational.secondary,
+                pointBorderColor: colors.operational.primary,
+                borderWidth: 2,
+                lineTension: 0.3
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'ROI Impact',
-                    color: colors.text
+                legend: {
+                    position: 'top',
+                    labels: { color: colors.text }
+                }
+            },
+            scales: {
+                r: {
+                    angleLines: {
+                        color: colors.text + '40'
+                    },
+                    grid: {
+                        color: colors.text + '20'
+                    },
+                    pointLabels: {
+                        color: colors.text,
+                        font: {
+                            size: 12
+                        }
+                    },
+                    ticks: { 
+                        color: colors.text,
+                        backdropColor: 'transparent',
+                        font: {
+                            size: 10
+                        }
+                    }
                 }
             },
             animation: {
-                duration: 2000
+                duration: 2000,
+                easing: 'easeInOutQuart'
             }
         }
     });
 }
 
-// Theme Switching
+
+
+
 function updateChartsTheme() {
     const colors = getThemeColors(document.body.classList.contains('dark-theme'));
+    
     Chart.instances.forEach(chart => {
+        // Base theme updates
         chart.options.plugins.legend.labels.color = colors.text;
         chart.options.plugins.title.color = colors.text;
-        chart.options.scales.x.grid.color = colors.grid;
-        chart.options.scales.y.grid.color = colors.grid;
-        chart.options.scales.x.ticks.color = colors.text;
-        chart.options.scales.y.ticks.color = colors.text;
+        
+        // Update scales based on chart type
+        if (chart.config.type === 'radar') {
+            chart.options.scales.r.angleLines.color = colors.grid;
+            chart.options.scales.r.grid.color = colors.grid;
+            chart.options.scales.r.pointLabels.color = colors.text;
+            chart.options.scales.r.ticks.color = colors.text;
+            chart.options.scales.r.ticks.backdropColor = 'transparent';
+        } else {
+            chart.options.scales.x.grid.color = colors.grid;
+            chart.options.scales.y.grid.color = colors.grid;
+            chart.options.scales.x.ticks.color = colors.text;
+            chart.options.scales.y.ticks.color = colors.text;
+        }
+        
+        // Update chart-specific colors
+        if (chart.config.type === 'line' || chart.config.type === 'area') {
+            chart.data.datasets.forEach((dataset, index) => {
+                dataset.borderColor = index === 0 ? colors.financial.primary : colors.financial.secondary;
+                dataset.backgroundColor = index === 0 ? colors.financial.primary + '40' : colors.financial.secondary + '40';
+            });
+        } else if (chart.config.type === 'doughnut' || chart.config.type === 'pie') {
+            chart.data.datasets[0].backgroundColor = [
+                colors.operational.primary,
+                colors.operational.primary + '80',
+                colors.operational.secondary,
+                colors.operational.secondary + '80'
+            ];
+        } else if (chart.config.type === 'bar') {
+            chart.data.datasets.forEach((dataset, index) => {
+                dataset.backgroundColor = index === 0 ? colors.operational.primary : colors.operational.secondary;
+            });
+        } else if (chart.config.type === 'radar') {
+            chart.data.datasets[0].backgroundColor = colors.operational.primary + '40';
+            chart.data.datasets[0].borderColor = colors.operational.primary;
+            chart.data.datasets[0].pointBackgroundColor = colors.operational.secondary;
+            chart.data.datasets[0].pointBorderColor = colors.operational.primary;
+        }
+        
         chart.update();
+    });
+
+
+    // Animate theme transition
+    gsap.to('body', {
+        duration: 0.3,
+        backgroundColor: document.body.classList.contains('dark-theme') ? '#1a202c' : '#ffffff',
+        ease: 'power2.inOut'
     });
 }
 
-// Initialize dashboard
-function initDashboard() {
-    const charts = [
-        createRevenueChart,
-        createUnitEconomicsChart,
-        createEfficiencyChart,
-        createImplementationChart,
-        createMarketCoverageChart,
-        createROIChart
-    ];
-    
-    charts.forEach(chart => chart());
-    initChartNavigation();
-    
- // Theme change listener
-    document.getElementById('themeToggle').addEventListener('click', updateChartsTheme);
-}
+
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('dashboard').classList.contains('active')) {
-        setTimeout(initDashboard, 100);
+    const dashboard = document.getElementById('dashboard');
+    if (dashboard?.classList.contains('active')) {
+        // Ensure proper initialization timing
+        setTimeout(() => {
+            try {
+                initDashboard();
+            } catch (error) {
+                console.error('Dashboard initialization failed:', error);
+            }
+        }, 100);
     }
 });
 
-// Add to your existing JavaScript
+
+
+
+// Enhanced dashboard animations
 function initDashboardAnimations() {
     // Staggered entry animation for metric cards
     gsap.from('.metric-card', {
@@ -403,23 +532,15 @@ function initDashboardAnimations() {
         ease: 'power3.out'
     });
 
-    // Chart reveal animations
+    // Enhanced chart reveal animations with scaling
     gsap.from('.chart-container', {
         duration: 0.8,
         opacity: 0,
         y: 20,
+        scale: 0.95,
         stagger: 0.2,
-        ease: 'power2.out',
+        ease: 'back.out(1.2)',
         delay: 0.3
-    });
-}
-
-// Add smooth transitions for theme switching
-function updateThemeWithAnimation() {
-    gsap.to('body', {
-        duration: 0.3,
-        backgroundColor: document.body.classList.contains('dark-theme') ? '#1a202c' : '#ffffff',
-        ease: 'power2.inOut'
     });
 }
 
