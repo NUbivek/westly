@@ -19,6 +19,34 @@ body {
     animation: fadeIn 0.8s ease-out forwards;
 }
 
+.title-slide {
+    position: relative;
+    text-align: center;
+}
+
+.highlight-text {
+    font-size: 2em; /* Larger font size for emphasis */
+    color: #ffcc00; /* Highlight color */
+    animation: fadeIn 1s ease-in-out; /* Animation for dramatic entry */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.blur-background {
+    filter: blur(5px); /* Blur effect for background */
+    transition: filter 0.5s ease; /* Smooth transition */
+}
+
+
 /* Theme Variables */
 :root {
     --financial-primary: #1e40af;
@@ -73,11 +101,14 @@ body {
                     gap: 1rem;
                 }
                 
-                .section {
+              .section {
                     padding: 1rem;
                     border-radius: 0.5rem;
                     transition: background 0.3s ease;
                     position: relative;
+                  display: flex;  /* Add this for proper content alignment */
+                flex-direction: column;  /* Add this for proper content alignment */
+                    
                 }
                 
                 .section.financial {
@@ -215,6 +246,34 @@ body {
     display: block;
 }
 
+
+/* Add these to your existing CSS */
+.top-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.middle-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Update chart container for better visibility */
+.chart-container {
+    min-height: 400px;
+    width: 100%;
+}
+
+/* Ensure proper chart scaling */
+.chart-container canvas.active {
+    max-width: 100%;
+    height: auto;
+}
+
                 /* Chart-specific animations */
                @keyframes chartFadeIn {
                 from { 
@@ -249,16 +308,17 @@ body {
                 /* Navigation Controls */
                 .nav-arrow {
                     position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
+                    bottom: 1px;  /* Changed from top: 50% */
+                    transform: translateX(0);  /* Changed from translateY(-50%) */
                     z-index: 10;
                     background: var(--bg-primary);
+                    opacity: 0.8;
                     border: none;
                     border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
+                    width: 30px;
+                    height: 30px;
                     cursor: pointer;
-                    opacity: 0.8;
+                    opacity: 0.9;
                     transition: opacity 0.3s ease;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                     display: flex;
@@ -803,6 +863,7 @@ body.dark-theme .pdf-frame {
     border-radius: 8px;
     margin: 10px 0;
     transition: all 0.3s ease;
+    animation: bounce 1s ease infinite alternate;
 }
 
 .market-stat:hover {
@@ -814,9 +875,20 @@ body.dark-theme .pdf-frame {
     font-size: 2em;
     font-weight: bold;
     color: #2b6cb0;
-    opacity: 0;
-    animation: slideInUp 1s forwards;
-    animation-delay: 0.3s;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+}
+
+
+
+/* Add the bounce keyframes animation */
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
 }
 
 /* Quote */
