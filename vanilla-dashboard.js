@@ -37,6 +37,34 @@ const operationalData = {
 // Register Chart.js plugin
 Chart.register(ChartDataLabels);
 
+const universalChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        datalabels: { display: false },
+        title: {
+            font: {
+                size: 16,
+                weight: 'bold',
+                family: 'system-ui, -apple-system, sans-serif'
+            }
+        }
+    },
+    scales: {
+        x: {
+            title: { display: true },
+            grid: { drawBorder: false }
+        },
+        y: {
+            title: { display: true },
+            grid: { drawBorder: false }
+        }
+    },
+    animation: {
+        duration: 2000,
+        easing: 'easeInOutQuart'
+    }
+};
 
 
 function initDashboard() {
@@ -98,25 +126,32 @@ function initDashboard() {
 
 function getThemeColors(isDark) {
     return {
-        background: isDark ? 'rgba(30, 41, 59, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-        text: isDark ? '#e2e8f0' : '#2d3748',
-        grid: isDark ? '#475569' : '#e2e8f0',
+        background: isDark ? 'rgba(36, 44, 52, 0.9)' : 'rgba(242, 243, 245, 0.9)', // Soft dark gray vs light off-white
+        text: isDark ? '#d4d8dd' : '#4a4a4a', // Gentle light gray vs deep charcoal
+        grid: isDark ? '#5c6671' : '#d1d5db', // Medium slate gray vs soft silver
         financial: {
-            primary: isDark ? '#60a5fa' : '#3b82f6',
-            secondary: isDark ? '#93c5fd' : '#60a5fa',
+            primary: isDark ? '#3d474f' : '#5a5f65', // Muted slate blue-gray
+            secondary: isDark ? '#6b7280' : '#888c93', // Delicate muted gray
             gradient: isDark ? 
-                ['rgba(96, 165, 250, 0.8)', 'rgba(147, 197, 253, 0.8)'] :
-                ['rgba(59, 130, 246, 0.8)', 'rgba(96, 165, 250, 0.8)']
+                ['rgba(61, 71, 79, 0.5)', 'rgba(107, 114, 128, 0.5)'] :
+                ['rgba(90, 95, 101, 0.5)', 'rgba(136, 140, 147, 0.5)'] // Smooth transition
         },
         operational: {
-            primary: isDark ? '#818cf8' : '#4f46e5',
-            secondary: isDark ? '#a5b4fc' : '#818cf8',
+            primary: isDark ? '#355f7a' : '#3c8dad', // Soft navy blue vs teal
+            secondary: isDark ? '#5c6671' : '#8a939e', // Subtle gray
             gradient: isDark ?
-                ['rgba(129, 140, 248, 0.8)', 'rgba(165, 180, 252, 0.8)'] :
-                ['rgba(79, 70, 229, 0.8)', 'rgba(129, 140, 248, 0.8)']
+                ['rgba(53, 95, 122, 0.5)', 'rgba(92, 102, 113, 0.5)'] :
+                ['rgba(60, 141, 173, 0.5)', 'rgba(138, 147, 158, 0.5)'] // Balanced blues and grays
+        },
+        accents: {
+            brown: isDark ? '#6b4f4f' : '#8b6b6b', // Gentle mocha
+            purple: isDark ? '#4c4177' : '#6e5a99', // Muted lavender
+            green: isDark ? '#345e52' : '#4d8b75', // Subtle forest green
         }
     };
 }
+
+
 
 
 
@@ -537,7 +572,6 @@ function createMarketCoverageChart() {
     });
 }
 
-
 function createROIChart() {
     const ctx = document.getElementById('roiChart').getContext('2d');
     const colors = getThemeColors(document.body.classList.contains('dark-theme'));
@@ -601,13 +635,20 @@ function createROIChart() {
                     enabled: true
                 },
                 datalabels: {
-                    display: false
+                    display: function(context) {
+                        return context.active;
+                    },
+                    color: colors.text,
+                    font: {
+                        weight: 'bold'
+                    },
+                    padding: 6
                 }
             },
             scales: {
                 r: {
                     angleLines: {
-                        color: colors.grid + '40'
+                        color: '#e7dde1'  // Changed this line to set radar line color
                     },
                     grid: {
                         color: colors.grid + '20'
@@ -624,6 +665,10 @@ function createROIChart() {
                         font: {
                             size: 10
                         }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Performance Score (%)'
                     }
                 }
             },
@@ -634,6 +679,7 @@ function createROIChart() {
         }
     });
 }
+
 
 function createRevenueGrowthChart() {
     const ctx = document.getElementById('revenueGrowthChart').getContext('2d');
@@ -706,26 +752,34 @@ function createRevenueGrowthChart() {
     });
 }
 
-
 function createBurnMarginChart() {
     const ctx = document.getElementById('burnMarginChart').getContext('2d');
     const colors = getThemeColors(document.body.classList.contains('dark-theme'));
     
     return new Chart(ctx, {
-        type: 'scatter',
+        type: 'line',
         data: {
-            datasets: [{
-                label: 'Burn Multiple vs Margin',
-                data: [
-                    {x: 1.96, y: 74.19},
-                    {x: -0.24, y: 95.02},
-                    {x: -0.24, y: 95.03}
-                ],
-                backgroundColor: colors.financial.primary,
-                borderColor: colors.financial.secondary,
-                pointRadius: 8,
-                pointHoverRadius: 12
-            }]
+            labels: ['FY24', 'FY25', 'FY26'],
+            datasets: [
+                {
+                    label: 'Burn Multiple',
+                    data: [1.96, -0.24, -0.24],
+                    borderColor: colors.financial.primary,
+                    backgroundColor: colors.financial.primary + '20',
+                    yAxisID: 'y',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Gross Margin (%)',
+                    data: [74.19, 95.02, 95.03],
+                    borderColor: colors.financial.secondary,
+                    backgroundColor: colors.financial.secondary + '20',
+                    yAxisID: 'y1',
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -743,25 +797,36 @@ function createBurnMarginChart() {
                     }
                 },
                 legend: {
-                    display: false
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                        color: colors.text,
+                        boxWidth: 12,
+                        padding: 20
+                    }
                 }
             },
             scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Burn Multiple'
-                    },
-                    ticks: { color: colors.text },
-                    grid: { color: colors.grid + '20' }
-                },
                 y: {
-                    title: {
-                        display: true,
-                        text: 'Gross Margin (%)'
+                    type: 'linear',
+                    position: 'left',
+                    title: { 
+                        display: true, 
+                        text: 'Burn Multiple' 
                     },
-                    ticks: { color: colors.text },
-                    grid: { color: colors.grid + '20' }
+                    ticks: { color: colors.text }
+                },
+                y1: {
+                    type: 'linear',
+                    position: 'right',
+                    title: { 
+                        display: true, 
+                        text: 'Gross Margin (%)' 
+                    },
+                    grid: { 
+                        drawOnChartArea: false 
+                    },
+                    ticks: { color: colors.text }
                 }
             },
             animation: {
@@ -771,6 +836,8 @@ function createBurnMarginChart() {
         }
     });
 }
+
+
 
 function createRevenueStreamsChart() {
     const ctx = document.getElementById('revenueStreamsChart').getContext('2d');
@@ -1393,53 +1460,80 @@ function updateChartsTheme() {
         
         // Update scales based on chart type
         if (chart.config.type === 'radar') {
-            chart.options.scales.r.angleLines.color = colors.grid;
-            chart.options.scales.r.grid.color = colors.grid;
+            chart.options.scales.r.angleLines.color = colors.grid + '40';
+            chart.options.scales.r.grid.color = colors.grid + '20';
             chart.options.scales.r.pointLabels.color = colors.text;
             chart.options.scales.r.ticks.color = colors.text;
             chart.options.scales.r.ticks.backdropColor = 'transparent';
         } else {
-            chart.options.scales.x.grid.color = colors.grid;
-            chart.options.scales.y.grid.color = colors.grid;
+            chart.options.scales.x.grid.color = colors.grid + '20';
+            chart.options.scales.y.grid.color = colors.grid + '20';
             chart.options.scales.x.ticks.color = colors.text;
             chart.options.scales.y.ticks.color = colors.text;
         }
         
-        // Update chart-specific colors
-        if (chart.config.type === 'line' || chart.config.type === 'area') {
-            chart.data.datasets.forEach((dataset, index) => {
-                dataset.borderColor = index === 0 ? colors.financial.primary : colors.financial.secondary;
-                dataset.backgroundColor = index === 0 ? colors.financial.primary + '40' : colors.financial.secondary + '40';
-            });
-        } else if (chart.config.type === 'doughnut' || chart.config.type === 'pie') {
-            chart.data.datasets[0].backgroundColor = [
-                colors.operational.primary,
-                colors.operational.primary + '80',
-                colors.operational.secondary,
-                colors.operational.secondary + '80'
-            ];
-        } else if (chart.config.type === 'bar') {
-            chart.data.datasets.forEach((dataset, index) => {
-                dataset.backgroundColor = index === 0 ? colors.operational.primary : colors.operational.secondary;
-            });
-        } else if (chart.config.type === 'radar') {
-            chart.data.datasets[0].backgroundColor = colors.operational.primary + '40';
-            chart.data.datasets[0].borderColor = colors.operational.primary;
-            chart.data.datasets[0].pointBackgroundColor = colors.operational.secondary;
-            chart.data.datasets[0].pointBorderColor = colors.operational.primary;
+        // Enhanced color palette with more nuanced color handling
+        switch(chart.config.type) {
+            case 'line':
+            case 'area':
+                chart.data.datasets.forEach((dataset, index) => {
+                    dataset.borderColor = index === 0 
+                        ? colors.financial.primary 
+                        : colors.financial.secondary;
+                    dataset.backgroundColor = index === 0 
+                        ? colors.financial.gradient[0] 
+                        : colors.financial.gradient[1];
+                });
+                break;
+            
+            case 'doughnut':
+            case 'pie':
+                chart.data.datasets[0].backgroundColor = [
+                    colors.operational.primary,
+                    colors.operational.primary + '80',
+                    colors.operational.secondary,
+                    colors.operational.secondary + '80'
+                ];
+                chart.data.datasets[0].borderColor = colors.background;
+                break;
+            
+            case 'bar':
+                chart.data.datasets.forEach((dataset, index) => {
+                    dataset.backgroundColor = index === 0 
+                        ? colors.operational.primary 
+                        : colors.operational.secondary;
+                });
+                break;
+            
+            case 'radar':
+                chart.data.datasets[0].backgroundColor = colors.operational.gradient[0] + '40';
+                chart.data.datasets[0].borderColor = colors.operational.primary;
+                chart.data.datasets[0].pointBackgroundColor = colors.operational.secondary;
+                chart.data.datasets[0].pointBorderColor = colors.operational.primary;
+                break;
         }
         
-        chart.update();
+        chart.update('none'); // Prevents re-animation
     });
 
-
-    // Animate theme transition
+    // Refined theme transition with GSAP
     gsap.to('body', {
-        duration: 0.3,
+        duration: 0.4,
         backgroundColor: document.body.classList.contains('dark-theme') ? '#1a202c' : '#ffffff',
+        color: document.body.classList.contains('dark-theme') ? '#e2e8f0' : '#2d3748',
         ease: 'power2.inOut'
     });
+
+    // Optional: Additional subtle transitions
+    gsap.to('.metric-card', {
+        duration: 0.3,
+        backgroundColor: document.body.classList.contains('dark-theme') ? '#2d3748' : '#f7fafc',
+        color: document.body.classList.contains('dark-theme') ? '#e2e8f0' : '#2d3748',
+        stagger: 0.05,
+        ease: 'power1.inOut'
+    });
 }
+
 
 
 
@@ -1469,6 +1563,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
     }
 });
+
 
 
 
