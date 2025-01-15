@@ -47,6 +47,18 @@ body {
 }
 
 
+.card ul ul {
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+
+.card ul ul li {
+    margin-bottom: 4px;
+    list-style-type: circle;
+}
+
+
 /* Theme Variables */
 :root {
     --financial-primary: #1e40af;
@@ -132,7 +144,7 @@ body {
                /* Update metric card layout */
                     .metric-card {
                         background: var(--card-bg);
-                        padding: 0.75rem 1rem;
+                        padding: 0.75rem 2rem 0.75rem 1rem;
                         border-radius: 0.5rem;
                         border: 1px solid var(--border-color);
                         box-shadow: 0 10px 16px rgba(0, 0, 0, 0.15);
@@ -863,7 +875,6 @@ body.dark-theme .pdf-frame {
     border-radius: 8px;
     margin: 10px 0;
     transition: all 0.3s ease;
-    animation: bounce 1s ease infinite alternate;
 }
 
 .market-stat:hover {
@@ -875,21 +886,11 @@ body.dark-theme .pdf-frame {
     font-size: 2em;
     font-weight: bold;
     color: #2b6cb0;
-    font-variant-numeric: tabular-nums;
-    font-feature-settings: "tnum";
+    opacity: 0;
+    animation: slideInUp 1s forwards;
+    animation-delay: 0.3s;
 }
 
-
-
-/* Add the bounce keyframes animation */
-@keyframes bounce {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(-10px);
-    }
-}
 
 /* Quote */
 .quote {
