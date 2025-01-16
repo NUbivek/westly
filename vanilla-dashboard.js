@@ -1705,12 +1705,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Then show initial charts
                     showChart(0, 'financial');
                     showChart(0, 'operational');
-                }, 500);
+                }, 300);
                 
             } catch (error) {
                 console.error('Dashboard initialization failed:', error);
             }
-        }, 300);
+        }, 100);
     }
 });
 
